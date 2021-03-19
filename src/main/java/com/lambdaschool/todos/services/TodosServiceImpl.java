@@ -28,11 +28,10 @@ public class TodosServiceImpl implements TodosService {
     @Override
     public void markComplete(long todoid)
     {
-        if (todosrepo.findById(todoid).isPresent()) {
-            todosrepo.updateComplete(userAuditing.getCurrentAuditor().get(), todoid);
-        } else {
-            throw new EntityNotFoundException("Todo not found!");
-        }
+        Todos newTodos = todosrepo.findById(todoid)
+            .orElseThrow(()-> new EntityNotFoundException("Todo not found!"));
+        newTodos.setCompleted(true);
+        todosrepo.save(newTodos);
     }
 
     @Transactional
