@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 
 @Transactional
 @Service(value = "todosService")
-public class TodosServiceImpl implements TodosService{
+public class TodosServiceImpl implements TodosService {
 
     //Autowired
     @Autowired
@@ -26,19 +26,21 @@ public class TodosServiceImpl implements TodosService{
 
     @Transactional
     @Override
-    public void markComplete(long todoid){
-
-        if(todosrepo.findById(todoid).isPresent()){
+    public void markComplete(long todoid)
+    {
+        if (todosrepo.findById(todoid).isPresent()) {
             todosrepo.updateComplete(userAuditing.getCurrentAuditor().get(), todoid);
-        }else{
+        } else {
             throw new EntityNotFoundException("Todo not found!");
         }
     }
 
     @Transactional
     @Override
-    public Todos save(long userid, String description){
+    public Todos save(long userid, String description)
+    {
         User currentUser = userService.findUserById(userid);
+
         Todos newtodo = new Todos(currentUser, description);
 
         return todosrepo.save(newtodo);
